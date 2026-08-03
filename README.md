@@ -41,4 +41,54 @@ flowchart TD
 - **SAST:** [Semgrep](https://semgrep.dev/)
 - **Secret Scanning:** [Gitleaks](https://github.com/gitleaks/gitleaks)
 - **SCA:** [OWASP Dependency-Check](https://owasp.org/www-project-dependency-check/)
+
+# Getting Started
+
+## 1. Clone the repository
+
+```bash
+git clone <repository-url>
+cd <repository-name>
+```
+
+## 2. Install the required tools
+
+Run the installation script:
+
+```bash
+./installtools.sh
+```
+
+## 3. Run the scanner
+
+### Scan a GitHub repository
+
+```bash
+python main.py https://github.com/<org>/<repository>
+```
+
+### Scan a specific branch
+
+```bash
+python main.py https://github.com/<org>/<repository> --branch main
+```
+
+### Scan a local repository
+
+```bash
+python main.py /path/to/local/repository --local
+```
+
+## Examples
+
+```bash
+# Scan the default branch
+python main.py https://github.com/openai/openai-python
+
+# Scan a specific branch
+python main.py https://github.com/openai/openai-python --branch dev
+
+# Scan a local repository
+python main.py ~/Projects/my-app --local
+```
    
