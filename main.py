@@ -25,7 +25,7 @@ import shutil
 import tempfile
 import time
 
-from Scanners import run_dependency_check, run_gitleaks, run_semgrep
+from Scanners import run_dependency_check, run_gitleaks, run_semgrep, run_trivy
 from findingstruct import Finding
 from normalizarion import SEVERITY_ORDER, correlate_and_prioritize
 from scanrepo import get_repo 
@@ -56,9 +56,10 @@ def main():
         repo_path = get_repo(args.source, args.local, args.branch, tmp_dir)
  
         all_findings: list[Finding] = []
-        all_findings += run_semgrep(repo_path, out_dir)
+        # all_findings += run_semgrep(repo_path, out_dir)
         all_findings += run_gitleaks(repo_path, out_dir)
         all_findings += run_dependency_check(repo_path, out_dir)
+        all_findings += run_trivy(repo_path,out_dir)
  
         prioritized = correlate_and_prioritize(all_findings)
  

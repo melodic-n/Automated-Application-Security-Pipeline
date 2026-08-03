@@ -139,4 +139,65 @@ def run_dependency_check(repo_path: Path, out_dir: Path) -> list[Finding]:
  
     print(f"  -> {len(findings)} findings ({raw_path.name})")
     return findings
- 
+
+
+def run_trivy(repo_path: Path, out_dir: Path) -> list[Finding]:
+        print("[*] Running Trivy ...")
+        if not check_tool_available("trivy"):
+            print("  ! trivy not found on PATH, skipping")
+            return []
+
+        raw_path = out_dir / "trivy_raw.json"
+
+        run_cmd([
+            "trivy",
+            "fs",
+            "--format", "json",
+            "--output", str(raw_path),
+            str(repo_path),
+        ])
+
+        findings = []
+
+        if raw_path.exists() and raw_path.stat().st_size > 0:
+            try:
+                data = json.loads(raw_path.read_text())
+
+                sev_map = {
+                    "CRITICAL": "critical",
+                    "HIGH": "high",
+                    "MEDIUM": "medium",
+                    "LOW": "low",
+                    "UNKNOWN": "info",
+                }
+
+                for result in data.get("Results", []):
+                    target = result.get("Target", "")
+
+                    for i, vuln in enumerate(result.get("Vulnerabilities", []) or []):
+                        findings.append(
+                            Finding(
+                                id=f"trivy-{i}-{vuln.get('VulnerabilityID','unknown')}",
+                                tool="trivy",
+                                category="dependency",
+                                severity=sev_map.get(
+                                    vuln.get("Severity", "").upper(),
+                                    "info",
+                                ),
+                                title=vuln.get(
+                                    "PkgName",
+                                    vuln.get("VulnerabilityID", "unknown"),
+                                ),
+                                description=vuln.get("Title")
+                                or vuln.get("Description", ""),
+                                file=target,
+                                line=None,
+                                raw=vuln,
+                            )
+                        )
+
+            except json.JSONDecodeError:
+                print("  ! could not parse Trivy output")
+
+        print(f"  -> {len(findings)} findings ({raw_path.name})")
+        return findings
