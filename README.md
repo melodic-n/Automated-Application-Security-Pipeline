@@ -9,22 +9,24 @@ There are open source tools available for static vulnerability analysis like Sem
  
 ```mermaid
 flowchart TD
-    A[("📦 Developer Repository")] --> B["🔍 Repository Scanner"]
+    A[(" Developer Repository")] --> B[" Repository Scanner"]
  
-    B --> C1["🧪 Semgrep<br/><sub>Static Analysis</sub>"]
-    B --> C2["🔑 Gitleaks<br/><sub>Secret Detection</sub>"]
-    B --> C3["📚 Dependency Check<br/><sub>SCA / CVEs</sub>"]
- 
-    C1 --> D["🧬 Finding Normalizer"]
+    B --> C1[" Semgrep<br/><sub>Static Analysis</sub>"]
+    B --> C2[" Gitleaks<br/><sub>Secret Detection</sub>"]
+    B --> C3[" Dependency Check<br/><sub>SCA / CVEs</sub>"]
+    B --> C4[" Other tools"]
+
+    C1 --> D[" Finding Normalizer"]
     C2 --> D
     C3 --> D
+    C4 --> D
+
+    D --> E[" Correlation Engine"]
+    E --> F[" Risk Prioritization"]
  
-    D --> E["🔗 Correlation Engine"]
-    E --> F["⚖️ Risk Prioritization"]
- 
-    F --> G1["📊 Dashboard"]
-    F --> G2["📄 PDF Report"]
-    F --> G3["🌐 REST API"]
+    F --> G1[" Dashboard"]
+    F --> G2[" PDF Report"]
+    F --> G3[" REST API"]
  
     classDef source fill:#1f2937,stroke:#60a5fa,stroke-width:2px,color:#fff
  classDef scanner fill:#0f766e,stroke:#5eead4,stroke-width:2px,color:#fff
