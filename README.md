@@ -47,8 +47,8 @@ flowchart TD
 ## 1. Clone the repository
 
 ```bash
-git clone <repository-url>
-cd <repository-name>
+git clone [<repository-url>](https://github.com/melodic-n/Automated-Application-Security-Pipeline.git)
+cd [<repository-name>](https://github.com/melodic-n/Automated-Application-Security-Pipeline.git)
 ```
 
 ## 2. Install the required tools
